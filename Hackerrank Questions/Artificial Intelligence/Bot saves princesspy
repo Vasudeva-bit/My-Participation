@@ -1,0 +1,30 @@
+#!/usr/bin/python
+
+def displayPathtoPrincess(n,grid):
+#print all the moves here
+    for idx, row in enumerate(grid):
+        if 'p' in row:
+            prin = (idx, row.index('p'))
+        elif 'm' in row:
+            m = (idx, row.index('m'))
+    drows = m[0] - prin[0]
+    dcols = m[1] - prin[1]
+    str = ""
+    if(drows < 0) :
+        str += "DOWN\n" * abs(drows)
+    else:
+        str += "UP\n" * abs(drows)
+    if(dcols < 0):
+        str += "RIGHT\n" * abs(dcols)
+    else:
+        str += "LEFT\n" * abs(dcols)
+    return str
+     
+        
+
+m = int(input())
+grid = [] 
+for i in range(0, m): 
+    grid.append(input().strip())
+
+print(displayPathtoPrincess(m,grid))
