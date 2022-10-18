@@ -1,0 +1,31 @@
+import Data.List (sortOn, intercalate)
+import Data.Ord (Down(Down))
+import Data.Array (listArray, bounds, (!))
+
+fromList xs = listArray (1, length xs) xs
+
+-- arr is non-decreasing
+help arr low (beg, end)
+  | beg == end = beg
+  | val >= low = help arr low (beg, med)
+  | otherwise = help arr low (med+1, end)
+  where med = (beg + end) `div` 2
+        val = arr ! med
+
+search arr low
+  | low <= arr ! beg = Just beg
+  | low > arr ! end = Nothing
+  | otherwise = Just $ help arr low (beg, end)
+  where bnds = bounds arr
+        beg = fst bnds
+        end = snd bnds
+
+ans Nothing = -1
+ans (Just x) = x
+
+main = do
+  ls <- fmap lines getContents
+  let as = map read $ words $ ls !! 1 :: [Int]
+      ss = map read $ drop 3 ls :: [Int]
+      arr = fromList $ scanl1 (+) $ sortOn Down as
+  putStrLn $ intercalate "\n" $ map (show . ans . search arr) ss
