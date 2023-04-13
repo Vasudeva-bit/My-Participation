@@ -4,18 +4,20 @@ using namespace std;
 
 int dp[19][2];
 
-int dfs(int idx, string &lim, bool tight) {
+int dfs(int idx, string& lim, bool tight) {
     int out = 0;
     if(idx == lim.size()) return 1;
     if(dp[idx][tight] != -1) return dp[idx][tight];
-    for(int i=0;i<=(tight)?lim[idx]-'0':9;i++) {
-        if(i == 4) continue;
+
+    for(int i=0;i<=((tight)?(lim[idx]-'0'):9);i++) {
+        if(i==4) continue;
         out += dfs(idx+1, lim, (tight)?(i==lim[idx]-'0'):0);
     }
+    
     return dp[idx][tight] = out;
 }
 
-bool solve() {
+void solve() {
     int n;
     cin>>n;
     int l = 0;
@@ -26,7 +28,6 @@ bool solve() {
         string lim = to_string(mid);
         memset(dp, -1, sizeof dp);
         int count = dfs(0, lim, 1)-1;
-        cout<<count<<"yes"<<endl;
         if(count >= n) {
             out = mid;
             r = mid-1;
